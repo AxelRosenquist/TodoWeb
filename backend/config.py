@@ -13,5 +13,6 @@ class Settings(BaseModel):
 
     CORS_ORIGINS: list[str] = os.getenv("CORS_ORIGINS", "").split(",")
 
+    CONN_STRING: str = f"postgresql+psycopg2://{DB_USERNAME}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
 
 settings = Settings()

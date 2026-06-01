@@ -2,7 +2,8 @@ from fastapi import Depends, FastAPI, HTTPException, Request, status
 from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
-
+from sqlalchemy import text
+from sqlalchemy.orm import Session
 
 from api.response import api_response
 from database.database import Base, engine, get_db 
@@ -11,6 +12,8 @@ from config import settings
 
 app = FastAPI(title="Shelfy")
 
+from database.models.items import Items
+from database.models.tasks import Tasks
 Base.metadata.create_all(bind=engine)
 
 
@@ -25,7 +28,7 @@ app.add_middleware(
 
 
 @app.exception_handler(HTTPException)
-async def http_exception_handler(request: Request, exc: HTTPException):
+def http_exception_handler(request: Request, exc: HTTPException):
     return JSONResponse(
         content=api_response(
             data=None,
@@ -37,7 +40,7 @@ async def http_exception_handler(request: Request, exc: HTTPException):
 
 
 @app.exception_handler(Exception)
-async def exception_handler(request: Request, exc: Exception):
+def exception_handler(request: Request, exc: Exception):
     return JSONResponse(
         content=api_response(
             data=None,
@@ -49,7 +52,7 @@ async def exception_handler(request: Request, exc: Exception):
 
 
 @app.exception_handler(RequestValidationError)
-async def validation_exception_handler(request: Request, exc: RequestValidationError):
+def validation_exception_handler(request: Request, exc: RequestValidationError):
     return JSONResponse(
         content=api_response(
             data=None,
@@ -61,7 +64,14 @@ async def validation_exception_handler(request: Request, exc: RequestValidationE
 
 
 @app.get('/')
-async def root():
+def root():
     return api_response(
         data="Hello World!"
     )
+
+
+@app.get("/db")
+def db_test(db: Session = Depends(get_db)):
+    result = db.execute(text("SELECT 1"))
+    result = result.scalar()
+    return api_response(data=result)

@@ -1,0 +1,19 @@
+import uuid
+
+from datetime import datetime
+from sqlalchemy import Boolean, ForeignKey, func, DateTime, String
+from sqlalchemy.dialects.postgresql import UUID as PGUUID
+from sqlalchemy.orm import Mapped, mapped_column, relationship
+
+from database.database import Base
+
+class Tasks(Base):
+    __tablename__ = "tasks"
+
+    id: Mapped[uuid.UUID] = mapped_column(PGUUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    item_id: Mapped[uuid.UUID] = mapped_column(PGUUID, ForeignKey("items.id"), nullable=False)
+    title: Mapped[str] = mapped_column(String(50), nullable=False)
+    is_completed: Mapped[bool] = mapped_column(Boolean, server_default="false")
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False, server_default=func.now())
+
+    item = relationship("Items", back_populates="tasks")

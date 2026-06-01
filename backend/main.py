@@ -1,14 +1,17 @@
-from fastapi import FastAPI, HTTPException, Request, status
+from fastapi import Depends, FastAPI, HTTPException, Request, status
 from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
 
 from api.response import api_response
+from database.database import Base, engine, get_db 
 from config import settings
 
 
 app = FastAPI(title="Shelfy")
+
+Base.metadata.create_all(bind=engine)
 
 
 print(settings.CORS_ORIGINS)

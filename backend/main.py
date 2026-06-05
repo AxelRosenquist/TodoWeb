@@ -6,11 +6,13 @@ from sqlalchemy import text
 from sqlalchemy.orm import Session
 
 from api.response import api_response
+from api.v1.router import items_router, tasks_router
 from database.database import Base, engine, get_db 
 from config import settings
 
 
 app = FastAPI(title="Shelfy")
+
 
 from database.models.items import Items
 from database.models.tasks import Tasks
@@ -25,6 +27,9 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+app.include_router(items_router)
+app.include_router(tasks_router)
 
 
 @app.exception_handler(HTTPException)
@@ -63,15 +68,8 @@ def validation_exception_handler(request: Request, exc: RequestValidationError):
     )
 
 
-@app.get('/')
+@app.get("/api/v1")
 def root():
     return api_response(
         data="Hello World!"
     )
-
-
-@app.get("/db")
-def db_test(db: Session = Depends(get_db)):
-    result = db.execute(text("SELECT 1"))
-    result = result.scalar()
-    return api_response(data=result)

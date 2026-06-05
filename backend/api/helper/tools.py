@@ -6,7 +6,7 @@ from uuid import UUID
 from database.models.items import Items
 
 
-def get_item(item: object, db: Session):
+def get_db_item(item: object, db: Session):
     stmt = select(item)
     result = db.execute(stmt)
     return result.scalars().all()

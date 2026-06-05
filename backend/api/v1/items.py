@@ -5,10 +5,10 @@ from sqlalchemy import select
 from sqlalchemy.orm import Session, selectinload
 
 from api.response import api_response
-from api.helper.tools import format_item_tasks, get_item
+from api.helper.tools import format_item_tasks, get_db_item
 from database.database import get_db
 from database.models.items import Items
-from schema.items_schema import ItemsCreate, ItemsUpdate
+from schemas.items_schema import ItemsCreate, ItemsUpdate
 
 router = APIRouter(prefix="/api/v1/items", tags=["items"])
 
@@ -33,7 +33,7 @@ def add_new_item(item: ItemsCreate,
 
 @router.get("/all-items")
 def get_all_items(db: Session = Depends(get_db)):
-    data = get_item(Items, db)
+    data = get_db_item(Items, db)
     return api_response(data=data)
 
 

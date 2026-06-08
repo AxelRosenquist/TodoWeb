@@ -37,7 +37,7 @@ def get_all_tasks(db: Session = Depends(get_db)):
     return api_response(data=data)
 
 
-@router.patch("/complete-task/{task_id}")
+@router.patch("/complete/{task_id}")
 def complete_task(task_id: UUID, db: Session = Depends(get_db)):
     stmt = select(Tasks).where(Tasks.id == task_id)
     result = db.execute(stmt)

@@ -45,7 +45,7 @@ def get_all_items_with_tasks(db: Session = Depends(get_db)):
     return api_response(data=format_item_tasks(items))
 
 
-@router.patch("/complete-item/{item_id}")
+@router.patch("/complete/{item_id}")
 def complete_item(item_id: UUID, db: Session = Depends(get_db)):
     stmt = select(Items).where(Items.id == item_id).options(selectinload(Items.tasks))
     result = db.execute(stmt)

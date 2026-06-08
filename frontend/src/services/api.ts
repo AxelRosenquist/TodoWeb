@@ -82,7 +82,8 @@ export const updateTask = async (
 
 export const toggleComplete = async (
   id: string,
-  endpoint: "items" | "tasks"
+  endpoint: "items" | "tasks",
+  currentStatus: boolean,
 ): Promise<void> => {
   await fetch(`${API_URL}/${endpoint}/complete/${id}`, {
     method: "PATCH",
@@ -90,7 +91,7 @@ export const toggleComplete = async (
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      is_completed: true,
+      is_completed: !currentStatus
     }),
   });
 };

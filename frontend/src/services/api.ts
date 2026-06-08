@@ -45,6 +45,7 @@ export const createTask = async (
     body: JSON.stringify({
       title,
       item_id,
+      description,
     }),
   });
 

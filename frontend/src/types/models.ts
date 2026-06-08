@@ -1,7 +1,7 @@
 export interface Item {
   id: string;
   title: string;
-  description: string;
+  description?: string;
   is_completed: boolean;
   created_at: string;
   tasks?: Task[];

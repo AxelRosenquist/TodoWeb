@@ -10,7 +10,7 @@ if DB_URL is None:
 
 engine = create_engine(
     DB_URL,
-    echo=True
+    echo=False
 )
 
 SessionLocal = sessionmaker(

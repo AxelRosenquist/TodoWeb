@@ -23,6 +23,7 @@ def add_new_task(task: TasksCreate,
                             detail=f"Task with the title {task.title} already exists for that Item.")
     new_task = Tasks(title=task.title.lower(),
                      item_id=task.item_id,
+                     description=task.description,
                      is_completed=task.is_completed)
     db.add(new_task)
     db.commit()
@@ -45,7 +46,7 @@ def complete_task(task_id: UUID, db: Session = Depends(get_db)):
     if not task:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
                             detail=f"Task with id {task_id} was not found")
-    task.is_completed = True
+    task.is_completed = not task.is_completed
     db.commit()
     db.refresh(task)
     return api_response(data=task)
@@ -61,7 +62,7 @@ def update_task(task_id: UUID,
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
                             detail=f"Task with id {task_id} was not found")
     if updata_values.title: task.title = updata_values.title.lower() 
-    
+    if updata_values.description: task.description = updata_values.description
     db.commit()
     db.refresh(task)
     return api_response(data=task)
@@ -75,5 +76,7 @@ def delete_task(task_id: UUID,
     if task:
         try:
             db.delete(task)
+            db.commit()
         except Exception as e:
-            raise HTTPException(detail=e)
+            raise HTTPException(status_code=status.HTTP_409_CONFLICT, 
+                                detail=e)

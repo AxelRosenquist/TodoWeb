@@ -17,7 +17,7 @@ class Tasks(Base):
     id: Mapped[uuid.UUID] = mapped_column(PGUUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     item_id: Mapped[uuid.UUID] = mapped_column(PGUUID(as_uuid=True), ForeignKey("items.id"), nullable=False)
     title: Mapped[str] = mapped_column(String(50), nullable=False)
-    descriptioon: Mapped[str] = mapped_column(String(200), nullable=True)
+    description: Mapped[str] = mapped_column(String(200), nullable=True)
     is_completed: Mapped[bool] = mapped_column(Boolean, server_default="false")
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False, server_default=func.now())
 

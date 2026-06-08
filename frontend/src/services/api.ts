@@ -5,9 +5,9 @@ const API_URL = "http://192.168.50.30:8000/api/v1"
 export const getItems = async (): Promise<Item[]> => {
   const response = await fetch(`${API_URL}/items/all-items-with-tasks`);
   const result = await response.json();
-  console.debug(result);
   return result.data.items;
 };
+
 
 export const createItem = async (
   title: string,
@@ -33,10 +33,6 @@ export const createTask = async (
   item_id: string,
   description?: string,
 ): Promise<Task> => {
-    console.debug(JSON.stringify({
-      title,
-      item_id,
-    }))
   const response = await fetch(`${API_URL}/tasks`, {
     method: "POST",
     headers: {
@@ -73,6 +69,7 @@ export const updateTask = async (
   title?: string,
   description?: string,
 ): Promise<void> => {
+  console.debug(JSON.stringify({ title, description }))
   await fetch(`${API_URL}/tasks/update/${id}`, {
     method: "PATCH",
     headers: {
@@ -86,7 +83,7 @@ export const updateTask = async (
 export const toggleComplete = async (
   id: string,
   endpoint: "items" | "tasks",
-  currentStatus: boolean,
+  currentStatus: boolean
 ): Promise<void> => {
   await fetch(`${API_URL}/${endpoint}/complete/${id}`, {
     method: "PATCH",
@@ -94,7 +91,7 @@ export const toggleComplete = async (
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      is_completed: !currentStatus
+      is_completed: !currentStatus,
     }),
   });
 };
@@ -111,6 +108,7 @@ export const deleteItem = async (
 export const deleteTask = async (
   id: string
 ): Promise<void> => {
+  console.debug(id)
   await fetch(`${API_URL}/tasks/delete/${id}`, {
     method: "DELETE",
   });

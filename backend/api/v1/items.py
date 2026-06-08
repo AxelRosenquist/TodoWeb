@@ -86,5 +86,7 @@ def delete_item(item_id: UUID,
     if item:
         try:
             db.delete(item)
+            db.commit()
         except Exception as e:
-            raise HTTPException(detail=e)
+            raise HTTPException(status_code=status.HTTP_409_CONFLICT, 
+                                detail=e)

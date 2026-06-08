@@ -12,7 +12,6 @@ function App() {
     const data = await getItems();
 
     setItems(data);
-    console.debug(data);
 };
 
   useEffect(() => {

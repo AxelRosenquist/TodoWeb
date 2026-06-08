@@ -14,6 +14,7 @@ import {
   updateTask,
   deleteItem,
   deleteTask,
+  toggleComplete,
 } from "../services/api";
 
 interface Props {
@@ -46,7 +47,6 @@ export default function ItemCard({ item, onUpdated }: Props) {
     e.preventDefault();
 
     if (!taskTitle.trim()) return;
-
     await createTask(taskTitle, item.id, taskDescription);
 
     setTaskTitle("");
@@ -66,11 +66,7 @@ export default function ItemCard({ item, onUpdated }: Props) {
   };
 
   const handleToggleTask = async (task: Task) => {
-    await updateTask(
-      task.id,
-      task.title,
-      task.description,
-    );
+    await toggleComplete(task.id, "tasks", task.is_completed);
 
     onUpdated();
   };
@@ -82,11 +78,7 @@ export default function ItemCard({ item, onUpdated }: Props) {
   };
 
   const handleUpdateTask = async (task: Task) => {
-    await updateTask(
-      task.id,
-      editTaskTitle,
-      editTaskDescription,
-    );
+    await updateTask(task.id, editTaskTitle, editTaskDescription);
 
     setEditingTaskId(null);
     onUpdated();

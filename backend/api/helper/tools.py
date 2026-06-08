@@ -26,6 +26,7 @@ def format_item_tasks(items: Items):
                         "id": str(task.id),
                         "item_id": str(task.item_id),
                         "title": task.title,
+                        "description": task.description,
                         "is_completed": task.is_completed,
                         "created_at": task.created_at
                     }

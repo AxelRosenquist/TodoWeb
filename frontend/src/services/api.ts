@@ -30,7 +30,8 @@ export const createItem = async (
 
 export const createTask = async (
   title: string,
-  item_id: string
+  item_id: string,
+  description?: string,
 ): Promise<Task> => {
     console.debug(JSON.stringify({
       title,
@@ -69,13 +70,14 @@ export const updateItem = async (
 export const updateTask = async (
   id: string,
   title?: string,
+  description?: string,
 ): Promise<void> => {
   await fetch(`${API_URL}/tasks/update/${id}`, {
     method: "PATCH",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ title }),
+    body: JSON.stringify({ title, description }),
   });
 };
 
@@ -93,5 +95,22 @@ export const toggleComplete = async (
     body: JSON.stringify({
       is_completed: !currentStatus
     }),
+  });
+};
+
+
+export const deleteItem = async (
+  id: string
+): Promise<void> => {
+  await fetch(`${API_URL}/items/delete/${id}`, {
+    method: "DELETE",
+  });
+};
+
+export const deleteTask = async (
+  id: string
+): Promise<void> => {
+  await fetch(`${API_URL}/tasks/delete/${id}`, {
+    method: "DELETE",
   });
 };

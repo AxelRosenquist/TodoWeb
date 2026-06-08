@@ -1,6 +1,7 @@
 services:
   todo-database:
     image: "postgres:latest"
+    container_name: todo-db
     ports: 
       - 5432:5432
     environment:

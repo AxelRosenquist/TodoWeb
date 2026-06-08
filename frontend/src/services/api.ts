@@ -1,6 +1,6 @@
 import type { Item, Task } from "../types/models";
 
-const API_URL = "http://192.168.50.30:8000/api/v1"
+const API_URL = import.meta.env.VITE_API_URL;
 
 export const getItems = async (): Promise<Item[]> => {
   const response = await fetch(`${API_URL}/items/all-items-with-tasks`);
